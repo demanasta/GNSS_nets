@@ -1,0 +1,10 @@
+full_NOA.catalogue
+*.jpg
+*.eps
+*.png
+*.cpt
+tmp*
+gmt.history
+gmt.conf
+*.sites
+
