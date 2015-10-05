@@ -1,0 +1,31 @@
+#!/bin/bash
+#configure this file for the main database parameters
+
+# //////////////////////////////////////////////////////////////////////////////
+# Set PATHS parameters
+pth2dems=${HOME}/Map_project/dems
+inputTopoL=${pth2dems}/ETOPO1_Bed_g_gmt4.grd
+inputTopoB=${pth2dems}/ETOPO1_Bed_g_gmt4.grd
+pth2logos=$HOME/Map_project/logos
+
+# //////////////////////////////////////////////////////////////////////////////
+# Set Network Style Ploting
+gr_style="-St0.28c -W0.01c/0 -Gred"
+sa_style="-St0.25c -W0.01c/0 -Ggreen"
+ur_style="-St0.24c -W0.01c/0 -Gblue"
+me_style="-St0.20c -W0.01c/0 -Gblack"
+
+# //////////////////////////////////////////////////////////////////////////////
+# Pre-defined parameters for GMT
+outfile=test.eps
+out_jpg=test.jpg
+landcpt=land_man.cpt
+bathcpt=bath_man.cpt
+maptitle=""
+
+# //////////////////////////////////////////////////////////////////////////////
+# Set FILE parameters
+greece_sta=greece.sites
+sant_sta=santorini.sites
+uranus_sta=uranus.sites
+metrica_sta=metrica.sites

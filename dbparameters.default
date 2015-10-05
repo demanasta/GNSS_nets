@@ -1,0 +1,10 @@
+#!/bin/bash
+#configure this file for the main database parameters
+dbhost="database_hostname"
+dbuser="username"
+dbpasswd="password"
+dbase="database_name"
+db_table="database table"
+db_code="column name with stations codes"
+db_lat="column name include latitude"
+db_lon="column name include longitude"

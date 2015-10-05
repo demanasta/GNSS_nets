@@ -6,36 +6,38 @@ function help {
 	echo "/******************************************************************************/"
 	echo " Program Name : cGNSSnets.sh"
 	echo " Version : v-1.0"
-	echo " Purpose : Plot network stations"
-	echo " Usage   : plot_nets.sh -r region |  | -o [output] | -jpg "
+	echo " Purpose : Plot cGNSS network stations"
+	echo " Usage   : cGNSSnets.sh -r region |  | -o [output] | -jpg "
 	echo " Switches: "
-        echo "           -r [:= region] region to plot [saegean, sant, extsant]"
-        echo "           -mt [:= map title] title map default none use quotes"
-        echo "		-fgnss : use file for gps inform (*network*.sites)"
-        echo "		-dbgnss: use database for gps information"
-
-        echo "/*** NETWORKS  PLOTS **********************************************************/"
-        echo "           -ggr [:= gps greece] Plot GPS Stations"
-        echo "           -gsa [:= gps santorini] "
-        echo "           -gur [:= gps uranus] "
-	echo "           -gme [:= gps mterica] "
-
-#         echo "           -tg [:= tide gauges] "
-#         echo "           -ftg [:= future tide gauges] "
-
-        echo "/*** OTHER OPRTIONS ************************************************************/"
-        echo "           -topo [:=topography] use dem for background"
-	echo "           -o [:= output] name of output files"
-	echo "           -l [:=labels] plot labels"
-        echo "           -leg [:=legend] insert legends"
-	echo "           -jpg : convert eps file to jpg"
-	echo "           -h [:= help] help menu"
+	echo "	-r [:= region] region to plot [saegean, sant, extsant]"
+	echo "		default : greece region"
+	echo "		sant : santorini"
+	echo "		extsant : extented santorini"
+	echo "		saegean : South aegean region "
+	echo "		grCyprus: greece + cyprus"
+	echo "	-mt [:= map title] title map default none use quotes"
+	echo "	-fgnss : use file for gps inform (*network*.sites)"
+	echo "	-dbgnss: use database for gps information"
+	echo ""
+	echo "/*** NETWORKS  PLOTS **********************************************************/"
+	echo "	-ggr [:= gps greece] Plot GPS Stations"
+	echo "	-gsa [:= gps santorini] "
+	echo "	-gur [:= gps uranus] "
+	echo "	-gme [:= gps mterica] "
+	echo ""
+	echo "/*** OTHER OPRTIONS ************************************************************/"
+        echo "	-topo [:=topography] use dem for background"
+	echo "	-o [:= output] name of output files"
+	echo "	-l [:=labels] plot labels"
+        echo "	-leg [:=legend] insert legends"
+	echo "	-jpg : convert eps file to jpg"
+	echo "	-h [:= help] help menu"
 	echo " Exit Status:    1 -> help message or error"
-	echo " Exit Status: >= 0 -> sucesseful exit"
+	echo " Exit Status:    0 -> sucesseful exit"
 	echo ""
 	echo "run:"
 	echo "/******************************************************************************/"
-	exit -2
+	exit 1
 }
 
 # //////////////////////////////////////////////////////////////////////////////
@@ -61,17 +63,24 @@ GNET_METRICA=0
 FGNSS=0
 DBGNSS=0
 
-# //////////////////////////////////////////////////////////////////////////////
-# Set PATHS parameters
-pth2dems=${HOME}/Map_project/dems
-# pth2nets=${HOME}/Map_project/4802_SEISMO/networks
+if [ ! -f "gmtparam" ]
+then
+	echo "gmtparam file does not exist"
+	exit 1
+else
+	source gmtparam
+fi
 
 # //////////////////////////////////////////////////////////////////////////////
-# Set FILE parameters
-greece_sta=greece.sites
-sant_sta=santorini.sites
-uranus_sta=uranus.sites
-metrica_sta=metrica.sites
+# Set PATHS parameters
+# pth2dems=${HOME}/Map_project/dems
+
+# # //////////////////////////////////////////////////////////////////////////////
+# # Set FILE parameters
+# greece_sta=greece.sites
+# sant_sta=santorini.sites
+# uranus_sta=uranus.sites
+# metrica_sta=metrica.sites
 # gps_sta=${pth2nets}/net-gps.est
 # gps_fsta=${pth2nets}/net-gps.fut
 # seism_sta=${pth2nets}/net-seism.est
@@ -81,30 +90,30 @@ metrica_sta=metrica.sites
 # tg_sta=${pth2nets}/net-tg.est
 # tg_fsta=${pth2nets}/net-tg.fut
 
-# //////////////////////////////////////////////////////////////////////////////
-# Set Network Style Ploting
-gr_style="-St0.28c -W0.01c/0 -Gred"
-sa_style="-St0.25c -W0.01c/0 -Ggreen"
-ur_style="-St0.24c -W0.01c/0 -Gblue"
-me_style="-St0.20c -W0.01c/0 -Gblack"
+# # //////////////////////////////////////////////////////////////////////////////
+# # Set Network Style Ploting
+# gr_style="-St0.28c -W0.01c/0 -Gred"
+# sa_style="-St0.25c -W0.01c/0 -Ggreen"
+# ur_style="-St0.24c -W0.01c/0 -Gblue"
+# me_style="-St0.20c -W0.01c/0 -Gblack"
 
 
-# //////////////////////////////////////////////////////////////////////////////
-# Pre-defined parameters for GMT
-outfile=test.eps
-out_jpg=test.jpg
-inputTopoL=${pth2dems}/ETOPO1_Bed_g_gmt4.grd
-inputTopoB=${pth2dems}/ETOPO1_Bed_g_gmt4.grd
-#inputTopoL=$HOME/Map_project/dems/ETOPO1_Bed_g_gmt4.grd
-#inputTopoB=$HOME/Map_project/dems/ETOPO1_Bed_g_gmt4.grd
-# frame=2
-# scale=-Lf20/34.5/36:24/100+l+jr
-# range=-R19/29/34/42
-# proj=-Jm24/37/1:6000000
-landcpt=land_man.cpt
-bathcpt=bath_man.cpt
-maptitle=""
-pth2logos=$HOME/Map_project/logos
+# # //////////////////////////////////////////////////////////////////////////////
+# # Pre-defined parameters for GMT
+# outfile=test.eps
+# out_jpg=test.jpg
+# inputTopoL=${pth2dems}/ETOPO1_Bed_g_gmt4.grd
+# inputTopoB=${pth2dems}/ETOPO1_Bed_g_gmt4.grd
+# #inputTopoL=$HOME/Map_project/dems/ETOPO1_Bed_g_gmt4.grd
+# #inputTopoB=$HOME/Map_project/dems/ETOPO1_Bed_g_gmt4.grd
+# # frame=2
+# # scale=-Lf20/34.5/36:24/100+l+jr
+# # range=-R19/29/34/42
+# # proj=-Jm24/37/1:6000000
+# landcpt=land_man.cpt
+# bathcpt=bath_man.cpt
+# maptitle=""
+# pth2logos=$HOME/Map_project/logos
 
 
 
@@ -151,24 +160,6 @@ do
 		-gme)
 			GNET_METRICA=1
 			shift
-			;;
-		-tg)
-                        NET_TG=1
-                        shift
-                        ;;
-		-t)
-			case "$2" in
-				final)
-					TYPE="fin"
-					shift
-					shift
-					;;
-				urapid)
-					TYPE="ur"
-					shift
-					shift
-					;;
-			esac
 			;;
 		-topo)
 #                       switch topo not used in server!
@@ -257,6 +248,7 @@ then
 	if [ ! -f "dbparameters" ]
 	then
 		echo "database parameters does not exist"
+		echo "copy daparameters.default file to dbparameters and configure db parameters"
 		exit 1
 	else
 		source dbparameters
