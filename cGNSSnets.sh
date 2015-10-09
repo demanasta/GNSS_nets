@@ -24,6 +24,7 @@ function help {
 	echo "	-gsa [:= gps santorini] "
 	echo "	-gur [:= gps uranus] "
 	echo "	-gme [:= gps mterica] "
+	echo "  -ghp [:= gps hepos] "
 	echo ""
 	echo "/*** OTHER OPRTIONS ************************************************************/"
         echo "	-topo [:=topography] use dem for background"
@@ -59,6 +60,7 @@ GNET_GREECE=0
 GNET_SANT=0
 GNET_URANUS=0
 GNET_METRICA=0
+GNET_HEPOS=0
 
 FGNSS=0
 DBGNSS=0
@@ -159,6 +161,10 @@ do
 			;;
 		-gme)
 			GNET_METRICA=1
+			shift
+			;;
+		-ghp)
+			GNET_HEPOS=1
 			shift
 			;;
 		-topo)
@@ -424,6 +430,49 @@ then
 	echo "G 0.25c" >> .legend
 	echo "S 0.3c t 0.22c black 0.22p 0.6c OTHERS" >> .legend
 fi
+
+# ///////////////// PLOT HEPOS NETWORK //////////////////////////////////
+if [ "$GNET_HEPOS" -eq 1 ]
+then
+	if [ "$DBGNSS" -eq 1 ]
+	then
+	echo "Warning: HEPOS net cannot ploted via db until now! use -fgnss switch"
+# 		mysql -h $dbhost -u $dbuser -p$dbpasswd -D $dbase -e \
+# 		"SELECT $db_code, $db_lat, $db_lon FROM $db_table where network='URANUS';" \
+# 		| grep -v + \
+# 		| awk 'NR>1 {print $3,$2,9,0,1,"RB",$1}' > tmp-uranus
+# 		psxy tmp-uranus -Jm -O -R $ur_style -K >> $outfile
+# 		if [ "$LABELS" -eq 1 ]
+# 		then		
+# 			pstext tmp-uranus -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
+# 			
+# 		fi
+	fi
+	if [ "$FGNSS" -eq 1 ]
+	then
+		if [ ! -f $hepos_sta ]
+		then
+			echo "input file $hepos_sta does not exist. look at network directory"
+			exit 1
+		else
+			awk '{print $2,$3}' $hepos_sta | psxy -Jm -O -R $hp_style -K >> $outfile
+			if [ "$LABELS" -eq 1 ]
+			then
+			      awk '{print $2,$3,9,0,1,"LB",$1}' $hepos_sta | pstext -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
+			fi
+		fi
+        fi
+	echo "G 0.25c" >> .legend
+	echo "S 0.4c c 0.15c red 0.22p 0.6c HEPOS" >> .legend
+fi
+
+
+
+
+
+
+
+
 
 echo "G 0.2c" >> .legend
 echo "D 0.3c 1p" >> .legend
