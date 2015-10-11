@@ -12,9 +12,14 @@ pth2logos=$HOME/Map_project/logos
 # Set Network Style Ploting
 gr_style="-St0.28c -W0.01c/0 -Gred"
 sa_style="-St0.25c -W0.01c/0 -Ggreen"
-ur_style="-St0.24c -W0.01c/0 -Gblue"
+ur_style="-St0.28c -W0.01c/0 -G0/0/160"
 me_style="-St0.20c -W0.01c/0 -Gblack"
 hp_style="-Sc0.15c -W0.01c/0 -Gred"
+
+grcom_style="-St0.28c -W0.01c/0 -Gred"
+grnoa_style="-St0.28c -W0.01c/0 -Gdarkgreen"
+grcrl_style="-St0.28c -W0.01c/0 -Gblue"
+
 
 # //////////////////////////////////////////////////////////////////////////////
 # Pre-defined parameters for GMT
@@ -31,3 +36,6 @@ sant_sta=santorini.sites
 uranus_sta=uranus.sites
 metrica_sta=metrica.sites
 hepos_sta=heposFULL.sites
+grecom_sta=comet.sites
+grenoa_sta=noanet.sites
+grecrl_sta=crlnet.sites
