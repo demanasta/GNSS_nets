@@ -301,16 +301,16 @@ if [ "$TOPOGRAPHY" -eq 1 ]
 then
 	# ####################### TOPOGRAPHY ###########################
 	# bathymetry
-	makecpt -Cgebco.cpt -T-7000/0/150 -Z > $bathcpt
+	makecpt -Cgebco.cpt -T-5000/100/150 -Z > $bathcpt
 	grdimage $inputTopoB $range $proj -C$bathcpt -K > $outfile
 	pscoast $proj -P $range -Df -Gc -K -O >> $outfile
 	# land
-	makecpt -Cgray.cpt -T-3000/1800/50 -Z > $landcpt
+	makecpt -Cgray.cpt -T-5000/1800/50 -Z > $landcpt
 	grdimage $inputTopoL $range $proj -C$landcpt  -K -O >> $outfile
 	pscoast -R -J -O -K -Q >> $outfile
 	#------- coastline -------------------------------------------
 	psbasemap -R -J -O -K --FONT_ANNOT_PRIMARY=10p $scale --FONT_LABEL=10p >> $outfile
-	pscoast -Jm -R -B$frame:."$maptitle": -Df -W -K  -O -U$logo_pos >> $outfile
+	pscoast -Jm -R -B$frame:."$maptitle": -Df -W.2,black -K  -O -U$logo_pos >> $outfile
 fi
 
 # start create legend file .legend
@@ -352,7 +352,7 @@ then
 		fi
 	fi
 	echo "G 0.25c" >> .legend
-	echo "S 0.4c t 0.22c red 0.22p 0.6c GREECE" >> .legend
+	echo "S 0.4c t 0.37c red 0.22p 0.6c GREECE" >> .legend
 	
 	
 fi
@@ -391,7 +391,7 @@ then
         fi
 
         echo "G 0.25c" >> .legend
-        echo "S 0.4c t 0.22c red 0.22p 0.6c COMET-NTUA" >> .legend
+        echo "S 0.4c t 0.37c red 0.22p 0.6c COMET-NTUA" >> .legend
 fi
 
 
@@ -429,7 +429,7 @@ then
         fi
 
         echo "G 0.25c" >> .legend
-        echo "S 0.4c t 0.22c darkgreen 0.22p 0.6c NOANET" >> .legend
+        echo "S 0.4c t 0.37c 153/76/0 0.22p 0.6c NOANET" >> .legend
 fi
 
 # ///////////////// PLOT GREECE NETWORKS -CRL SUBNETWORK //////////////////////////////////
@@ -466,7 +466,7 @@ then
         fi
 
         echo "G 0.25c" >> .legend
-        echo "S 0.4c t 0.22c blue 0.22p 0.6c CRL" >> .legend
+        echo "S 0.4c t 0.37c blue 0.22p 0.6c CRL" >> .legend
 fi
 
 
@@ -604,7 +604,7 @@ then
 		fi
         fi
 	echo "G 0.25c" >> .legend
-	echo "S 0.4c c 0.15c red 0.22p 0.6c HEPOS" >> .legend
+	echo "S 0.4c c 0.25c red 0.22p 0.6c HEPOS" >> .legend
 fi
 
 
