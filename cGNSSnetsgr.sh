@@ -25,6 +25,7 @@ function help {
         echo "  -ggrcom [:= gps COMET] Plot GPS Stations"
         echo "  -ggrnoa [:= gps NOANET] Plot GPS Stations"
         echo "  -ggrcrl [:= gps CRL] Plot GPS Stations"
+        echo "  -ggreth [:=jHellas -ethz]"
 
 	echo "	-gsa [:= gps santorini] "
 	echo "	-gur [:= gps uranus] "
@@ -69,6 +70,7 @@ GNET_HEPOS=0
 GNET_GRCOM=0
 GNET_GRNOA=0
 GNET_GRCRL=0
+GNET_GRETH=0
 
 FGNSS=0
 DBGNSS=0
@@ -169,6 +171,10 @@ do
 			;;
 		-ggrcrl)
 			GNET_GRCRL=1
+			shift
+			;;
+		-ggreth)
+			GNET_GRETH=1
 			shift
 			;;
 		-gsa)
@@ -467,6 +473,41 @@ then
 
         echo "G 0.25c" >> .legend
         echo "S 0.4c t 0.37c blue 0.22p 0.6c CRL" >> .legend
+fi
+
+# ///////////////// PLOT ETH HELLAS NET NETWORK //////////////////////////////////
+if [ "$GNET_GRETH" -eq 1 ]
+then
+	if [ "$DBGNSS" -eq 1 ]
+	then
+	echo "Warning: HELLASNET cannot ploted via db until now! use -fgnss switch"
+# 		mysql -h $dbhost -u $dbuser -p$dbpasswd -D $dbase -e \
+# 		"SELECT $db_code, $db_lat, $db_lon FROM $db_table where network='URANUS';" \
+# 		| grep -v + \
+# 		| awk 'NR>1 {print $3,$2,9,0,1,"RB",$1}' > tmp-uranus
+# 		psxy tmp-uranus -Jm -O -R $ur_style -K >> $outfile
+# 		if [ "$LABELS" -eq 1 ]
+# 		then		
+# 			pstext tmp-uranus -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
+# 			
+# 		fi
+	fi
+	if [ "$FGNSS" -eq 1 ]
+	then
+		if [ ! -f $greeth_sta ]
+		then
+			echo "input file $greeth_sta does not exist. look at network directory"
+			exit 1
+		else
+			awk '{print $2,$3}' $greeth_sta | psxy -Jm -O -R $greth_style -K >> $outfile
+			if [ "$LABELS" -eq 1 ]
+			then
+			      awk '{print $2,$3,9,0,1,"LB",$1}' $greeth_sta | pstext -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
+			fi
+		fi
+        fi
+	echo "G 0.25c" >> .legend
+	echo "S 0.4c t 0.37c yellow 0.22p 0.6c HELLAS-ETHZ" >> .legend
 fi
 
 

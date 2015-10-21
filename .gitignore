@@ -7,4 +7,5 @@ tmp*
 gmt.history
 gmt.conf
 *.sites
+*.txt
 dbparameters
