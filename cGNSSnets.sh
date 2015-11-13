@@ -2,42 +2,43 @@
 #plot network forseismo platform
 # //////////////////////////////////////////////////////////////////////////////
 # HELP FUNCTION
-function help {
-	echo "/******************************************************************************/"
-	echo " Program Name : cGNSSnets.sh"
-	echo " Version : v-1.0"
-	echo " Purpose : Plot cGNSS network stations"
-	echo " Usage   : cGNSSnets.sh -r region |  | -o [output] | -jpg "
-	echo " Switches: "
-	echo "	-r [:= region] region to plot [saegean, sant, extsant]"
-	echo "		default : greece region"
-	echo "		sant : santorini"
-	echo "		extsant : extented santorini"
-	echo "		saegean : South aegean region "
-	echo "		grCyprus: greece + cyprus"
-	echo "	-mt [:= map title] title map default none use quotes"
-	echo "	-fgnss : use file for gps inform (*network*.sites)"
-	echo "	-dbgnss: use database for gps information"
-	echo ""
-	echo "/*** NETWORKS  PLOTS **********************************************************/"
-	echo "	-ggr [:= gps greece] Plot GPS Stations"
-	echo "	-gsa [:= gps santorini] "
-	echo "	-gur [:= gps uranus] "
-	echo "	-gme [:= gps mterica] "
-	echo "  -ghp [:= gps hepos] "
-	echo ""
-	echo "/*** OTHER OPRTIONS ************************************************************/"
-        echo "	-topo [:=topography] use dem for background"
-	echo "	-o [:= output] name of output files"
-	echo "	-l [:=labels] plot labels"
-        echo "	-leg [:=legend] insert legends"
-	echo "	-jpg : convert eps file to jpg"
-	echo "	-h [:= help] help menu"
-	echo " Exit Status:    1 -> help message or error"
-	echo " Exit Status:    0 -> sucesseful exit"
-	echo ""
-	echo "run:"
-	echo "/******************************************************************************/"
+function help {	echo "
+/******************************************************************************/
+	Program Name : cGNSSnets.sh
+	Version : v-1.0
+	Purpose : Plot cGNSS network stations
+	Usage   : cGNSSnets.sh -r region |  | -o [output] | -jpg 
+Switches:
+	-r [:= region] region to plot [saegean, sant, extsant]
+		default : greece region
+		sant : santorini
+		extsant : extented santorini
+		saegean : South aegean region
+		grCyprus: greece + cyprus
+	-mt [:= map title] title map default none use quotes
+	-fgnss : use file for gps inform (*network*.sites)
+	-dbgnss: use database for gps information
+
+/*** NETWORKS  PLOTS **********************************************************/
+	-ggr [:= gps greece] Plot GPS Stations
+	-gsa [:= gps santorini] 
+	-gur [:= gps uranus]
+	-gme [:= gps mterica]
+	-ghp [:= gps hepos]
+
+/*** OTHER OPRTIONS ************************************************************/
+	-topo [:=topography] use dem for background
+	-o [:= output] name of output files
+	-l [:=labels] plot labels
+	-leg [:=legend] insert legends
+	-jpg : convert eps file to jpg
+	-h [:= help] help menu
+
+	Exit Status:    1 -> help message or error
+	Exit Status:    0 -> sucesseful exit
+
+	run:
+/******************************************************************************/"
 	exit 1
 }
 
