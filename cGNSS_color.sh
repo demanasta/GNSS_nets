@@ -313,8 +313,9 @@ then
 	grdimage $inputTopoB $range $proj -C$bathcpt -K > $outfile
 	pscoast $proj -P $range -Df -Gc -K -O >> $outfile
 	# land
-	makecpt -Chaxby.cpt -T-4500/3200/50 -Z > $landcpt
+	makecpt -Chaxby.cpt -T-4500/3200/20 -Z > $landcpt
 #	makecpt -Cglobe.cpt -T-8000/8000/50 -Z > $landcpt
+#	grdgradient $inputTopoL -GGRtest.grd -Ne0.6 -V -A270
 	grdimage $inputTopoL $range $proj -C$landcpt  -K -O >> $outfile
 	pscoast -R -J -O -K -Q >> $outfile
 	#------- coastline -------------------------------------------
