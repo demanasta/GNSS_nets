@@ -26,6 +26,7 @@ function help {	echo "
 	-ggrnoa [:= gps NOANET] Plot GPS Stations
 	-ggrcrl [:= gps CRL] Plot GPS Stations
 	-ggreth [:=jHellas -ethz]
+	-ggrepn [:= Greek EPN stations]
 
 		-gsa [:= gps santorini] 
 		-gur [:= gps uranus] 
@@ -52,8 +53,8 @@ function help {	echo "
 # GMT parameters
 gmtset MAP_FRAME_TYPE fancy
 gmtset PS_PAGE_ORIENTATION portrait
-gmtset FONT_ANNOT_PRIMARY 30 FONT_LABEL 30 MAP_FRAME_WIDTH 0.452c FONT_TITLE 42p
-gmtset FONT_LOGO 20 FONT_ANNOT_SECONDARY 25
+gmtset FONT_ANNOT_PRIMARY 40 FONT_LABEL 40 MAP_FRAME_WIDTH 0.452c FONT_TITLE 62p,Palatino-BoldItalic
+gmtset FONT_LOGO 40 FONT_ANNOT_SECONDARY 25
 gmtset MAP_SCALE_HEIGHT 20p
 # gmtset PS_MEDIA 29cx21c
 
@@ -65,6 +66,7 @@ LABELS=0
 OUTJPG=0
 LEGEND=0
 
+GNET_GREPN=0
 GNET_GREECE=0
 GNET_SANT=0
 GNET_URANUS=0
@@ -160,6 +162,10 @@ do
 			DBGNSS=1
 			shift
 			;;
+		-ggrepn)
+			GNET_GREPN=1
+			shift
+			;;
 		-ggr)
 			GNET_GREECE=1
 			shift
@@ -234,7 +240,7 @@ then
 	frame=0.05
         scale=-Lf25.51/36.315/36:24/4+l+jr
         range=-R25.27/25.55/36.3/36.5
-        proj=-Jm25.4/36.4/1:150000
+        proj=-Jm25.4/36.4/1:130000
         logo_pos=BL/0.2c/0.2c/"DSO[at]NTUA"
         legendc="-Jx1i -R0/8/0/8 -Dx0c/0.3c/3.6c/4.7c/BL"
 elif [ "$REGION" == "extsant" ]
@@ -288,22 +294,22 @@ then
 	logo_pos2="-C14.8c/0.1c"
 	legendc="-Jx1i -R0/8/0/8 -Dx0.3c/0.6c/3.6c/4.3c/BL"	
 else
-       gmtset PS_MEDIA 80cx80c
+       gmtset PS_MEDIA 100cx100c
         frame=1
-        scale=-Lf20/34.5/36:24/100+l+jr
+        scale=-Lf20/34.3/36:24/100+l+jr
         range=-R19/30/34/42
-        proj=-Jm24/37/1:1300000
+        proj=-Jm24/37/1:1040000
         logo_pos=BL/19c/0.2c/"DSO[at]NTUA"
-        logo_pos2="-C70.1c/0.6c"
-        legendc="-Jx1i -R0/8/0/8 -Dx0.3c/0.6c/3.6c/4.3c/BL"     
+        logo_pos2="-C89.1c/0.6c"
+        legendc="-Jx1i -R0/8/0/8 -Dx5.3c/14.6c/3.6c/4.3c/BL"     
 fi
 
 # ####################### TOPOGRAPHY ###########################
 if [ "$TOPOGRAPHY" -eq 0 ]
 then
 	################## Plot coastlines only ######################
-	pscoast $range $proj -B$frame:."$maptitle": -Df -W0.5/0/0/0 -G195  -U$logo_pos -K > $outfile
-	psbasemap -R -J -O -K --FONT_ANNOT_PRIMARY=10p $scale --FONT_LABEL=10p >> $outfile
+	pscoast $range $proj -B$frame:."$maptitle": -Df -W0.5/0/0/0 -G195 -K > $outfile
+	psbasemap -R -J -O -K $scale >> $outfile
 fi
 if [ "$TOPOGRAPHY" -eq 1 ]
 then
@@ -323,12 +329,57 @@ then
 	psbasemap -R -J -O -K $scale >> $outfile
 	pscoast -Jm -R -B$frame:."$maptitle": -Df -W.2,black -K  -O  >> $outfile
 fi
+# cp def_back.eps $outfile
 
 # start create legend file .legend
 echo "G 0.2c" > .legend
-echo "H 9 Times-Roman $maptitle" >> .legend
-echo "D 0.3c 1p" >> .legend
+echo "H 35 Times-Roman $maptitle" >> .legend
+echo "D 6c 1p" >> .legend
 echo "N 1" >> .legend
+
+
+
+
+# ///////////////// PLOT GREEK EPN STATIONS //////////////////////////////////
+if [ "$GNET_GREPN" -eq 1 ]
+then
+	if [ "$DBGNSS" -eq 1 ]
+	then
+	echo "don t use database for EPN network YET"
+# 		mysql -h $dbhost -u $dbuser -p$dbpasswd -D $dbase -e \
+# 		"SELECT $db_code, $db_lat, $db_lon FROM $db_table where network='GREECE';" \
+# 		| grep -v + \
+# 		| awk 'NR>1 {print $3,$2,9,0,1,"RB",$1}' > tmp-gre
+# 		psxy tmp-gre -Jm -O -R $gr_style -K >> $outfile
+# 		if [ "$LABELS" -eq 1 ]
+# 		then		
+# 			pstext tmp-gre -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
+# 			
+# 		fi
+	fi
+	if [ "$FGNSS" -eq 1 ]
+	then
+		if [ ! -f $greepn_sta ]
+		then
+			echo "input file $greepn_sta does not exist. look at network directory"
+			exit 1
+		else
+			awk '{print $2,$3}' $greepn_sta | psxy -Jm -O -R $grepn_style -K >> $outfile
+			if [ "$LABELS" -eq 1 ]
+			then
+			      awk '{print $2,$3,9,0,1,"RB",$1}' $greepn_sta | pstext -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
+			fi
+	# 	        echo "G 0.25c" >> .legend
+	# 		echo "S 0.4c t 0.22c red 0.22p 0.6c GREECE" >> .legend
+		fi
+	fi
+	echo "G 0.25c" >> .legend
+	echo "S -1.5c h 0.95c 150 0.22p 0c EPN stations" >> .legend
+	
+	
+fi
+
+
 
 # ///////////////// PLOT GREECE NETWORKS //////////////////////////////////
 if [ "$GNET_GREECE" -eq 1 ]
@@ -363,7 +414,7 @@ then
 		fi
 	fi
 	echo "G 0.25c" >> .legend
-	echo "S 0.4c t 0.37c red 0.22p 0.6c GREECE" >> .legend
+	echo "S 0c t 0.37c red 0.22p 1c GREECE" >> .legend
 	
 	
 fi
@@ -376,7 +427,7 @@ then
                 mysql -h $dbhost -u $dbuser -p$dbpasswd -D $dbase -e \
                 "SELECT $db_code, $db_lat, $db_lon FROM $db_table where network='GREECE' AND agency='NTUA-COMET';" \
                 | grep -v + \
-                | awk 'NR>1 {print $3,$2,9,0,1,"RB",$1}' > tmp-grecom
+                | awk 'NR>1 {print $3,$2,15,0,1,"RB",$1}' > tmp-grecom
                 psxy tmp-grecom -Jm -O -R $grcom_style -K >> $outfile
                 if [ "$LABELS" -eq 1 ]
                 then            
@@ -402,7 +453,7 @@ then
         fi
 
         echo "G 0.25c" >> .legend
-        echo "S 0.4c t 0.37c red 0.22p 0.6c COMET-NTUA" >> .legend
+        echo "S -1.5c t 0.8c black 0.22p 0c COMET-NTUA" >> .legend
 fi
 
 
@@ -440,7 +491,7 @@ then
         fi
 
         echo "G 0.25c" >> .legend
-        echo "S 0.4c t 0.37c 153/76/0 0.22p 0.6c NOANET" >> .legend
+        echo "S -1.5c t 0.8c green 0.22p 0c NOANET" >> .legend
 fi
 
 # ///////////////// PLOT GREECE NETWORKS -CRL SUBNETWORK //////////////////////////////////
@@ -477,7 +528,7 @@ then
         fi
 
         echo "G 0.25c" >> .legend
-        echo "S 0.4c t 0.37c blue 0.22p 0.6c CRL" >> .legend
+        echo "S -1.5c t 0.65c 178/102/255 0.22p 0c CRL" >> .legend
 fi
 
 # ///////////////// PLOT ETH HELLAS NET NETWORK //////////////////////////////////
@@ -547,7 +598,7 @@ then
 		fi
         fi
         echo "G 0.25c" >> .legend
-        echo "S 0.4c t 0.22c green 0.22p 0.6c SANTORINI" >> .legend
+        echo "S -1.5c t 0.45c green 0.22p 0c SANTORINI" >> .legend
 fi
 
 # ///////////////// PLOT URANUS NETWORK //////////////////////////////////
@@ -581,7 +632,7 @@ then
 		fi
         fi
 	echo "G 0.25c" >> .legend
-	echo "S 0.4c t 0.22c blue 0.22p 0.6c URANUS" >> .legend
+	echo "S -1.5c t 0.8c 0/128/255 0.22p 0c URANUS" >> .legend
 fi
 
 # ///////////////// PLOT metrica NETWORK //////////////////////////////////
@@ -662,8 +713,11 @@ fi
 
 
 echo "G 0.2c" >> .legend
-echo "D 0.3c 1p" >> .legend
-
+echo "D 6c 1p" >> .legend
+pstext -Jm -R19/30/34/44 -Dj0.2c/0.2c -Gwhite -O -K -V<<EOF>> $outfile
+24.5 42.7 60 0 31 CM NATIONAL TECHNICAL UNIVERSITY OF ATHENS
+24.5 42.5 50 0 31 CM DIONYSOS SATELLITE OBSERVATORY - HIGHER GEODESY LABORATORY
+EOF
 # ///////////////// PLOT LEGEND //////////////////////////////////
 if [ "$LEGEND" -eq 1 ]
 then

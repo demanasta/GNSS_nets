@@ -5,32 +5,33 @@
 # Set PATHS parameters
 pth2dems=${HOME}/Map_project/dems
 inputTopoL=${pth2dems}/ETOPO1_gr_2s.grd
-inputTopoB=${pth2dems}/ETOPO1_Bed_g_gmt4.grd
+inputTopoB=${pth2dems}/ETOPO1_gr_2s.grd
 pth2logos=$HOME/Map_project/logos
 
 # //////////////////////////////////////////////////////////////////////////////
 # Set Network Style Ploting
-gr_style="-St0.37c -W0.01c/0 -Gred"
-sa_style="-St0.37c -W0.01c/0 -Ggreen"
-ur_style="-St0.37c -W0.01c/0 -G0/0/160"
-me_style="-St0.20c -W0.01c/0 -Gblack"
-hp_style="-Sc0.24c -W0.01c/0 -Gred"
+# gr_style="-St0.37c -W0.01c/0 -Gred"
+sa_style="-St0.4c -W0.01p -Ggreen"
+ur_style="-St.8c -W0.01p -G0/128/255"
+# me_style="-St0.20c -W0.01c/0 -Gblack"
+# hp_style="-Sc0.24c -W0.01c/0 -Gred"
 
-grcom_style="-St0.9c -W0.05c/0 -Gblack"
-grnoa_style="-St0.9c -W0.05c/0 -Ggreen"
-grcrl_style="-St0.9c -W0.05c/0 -Gblue"
-greth_style="-St0.37c -W0.05c/0 -Gyellow"
+grcom_style="-St0.8c -W0.05p -Gblack"
+grnoa_style="-St0.8c -W0.05p -Ggreen"
+grcrl_style="-St0.65c -W0.05p -G178/102/255"
+grepn_style="-Sh0.95c -W0.05p -G150"
+# greth_style="-St0.37c -W0.05c/0 -Gyellow"
 # campaign site styles
 #------------------------------------------------------
-aegean_style="-St0.20c -W0.01c/0 -Gred"
-centrgr_style="-Sc0.14c -W0.01c/0 -Gred"
-corinth_style="-Sc0.10c -W0.01c/0 -Ggreen"
-evia_style="-Sc0.08c -W0.01c/0 -G204/51/255"
-grevena_style="-Sc0.10c -W0.01c/0 -Gbrown"
-hellnet_style="-Sc0.12c -W0.01c/0 -G255/153/51"
-ionian_style="-St0.18c -W0.01c/0 -G0/153/0"
-roads_style="-Sc0.12c -W0.01c/0 -Gblack"
-sing_style="-St0.18c -W0.01c/0 -Gblue"
+aegean_style="-St0.20c -W0.01p -Gred"
+centrgr_style="-Sc0.14c -W0.01p -Gred"
+corinth_style="-Sc0.10c -W0.01p -Ggreen"
+evia_style="-Sc0.08c -W0.01p -G204/51/255"
+grevena_style="-Sc0.10c -W0.01p -Gbrown"
+hellnet_style="-Sc0.12c -W0.01p -G255/153/51"
+ionian_style="-St0.18c -W0.01p -G0/153/0"
+roads_style="-Sc0.12c -W0.01p -Gblack"
+sing_style="-St0.18c -W0.01p -Gblue"
 
 
 # //////////////////////////////////////////////////////////////////////////////
@@ -52,6 +53,7 @@ grecom_sta=comet.sites
 grenoa_sta=noanet.sites
 grecrl_sta=crlnet.sites
 greeth_sta=HELLAS_ETH.txt
+greepn_sta=grepn.sites
 
 # campaign site styles
 #------------------------------------------------------
