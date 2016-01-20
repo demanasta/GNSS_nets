@@ -157,6 +157,7 @@ do
 		-dbgnss)
 			echo "DBASE not supported yet for campaign sites"
 			DBGNSS=0
+			exit 1
 			shift
 			;;
 		-cAegean)
@@ -235,15 +236,17 @@ then
         range=-R25.27/25.55/36.3/36.5
         proj=-Jm25.4/36.4/1:150000
         logo_pos=BL/0.2c/0.2c/"DSO[at]NTUA"
+        logo_pos2="-C15.2c/13.6c"
         legendc="-Jx1i -R0/8/0/8 -Dx0c/0.3c/3.6c/4.7c/BL"
 elif [ "$REGION" == "extsant" ]
 then
 	gmtset PS_MEDIA 25cx21c
-        frame=0.5
+        frame=0.25
         scale=-Lf25.95/36.315/36:24/10+l+jr
         range=-R25.2/26.1/36.2/36.9
         proj=-Jm25.4/36.4/1:500000
         logo_pos=BL/0.2c/0.2c/"DSO[at]NTUA"
+        logo_pos2="-C14.8c/0.1c"
         legendc="-Jx1i -R0/8/0/8 -Dx11c/3.3c/3.6c/4.7c/BL"
         
 elif [ "$REGION" == "saegean" ] #-------------------saegean 
@@ -254,18 +257,8 @@ then
         range=-R21/30.5/34/38.7
         proj=-Jm24/36/1:3450000
 	logo_pos=BL/19c/0.2c/"DSO[at]NTUA"
-	
+        logo_pos2="-C23.3c/13.8c"
 	legendc="-Jx1i -R0/8/0/8 -Dx20c/0.3c/3.6c/4.7c/BL"
-elif [ "$REGION" == "grCyprus" ] #-------------------greece - cyprus extended
-then
-	gmtset PS_MEDIA 29cx21c
-	frame=2
-	scale=-Lf20/34.5/36:24/100+l+jr
-	range=-R19/35/34/42
-	proj=-Jm24/37/1:6000000
-	logo_pos=BL/18c/0.2c/"DSO[at]NTUA"
-	logo_pos2="-C22c/13.7c"
-	legendc="-Jx1i -R0/8/0/8 -Dx.4c/0.2c/3.6c/4.7c/BL"	
 elif [ "$REGION" == "grCyprus" ] #-------------------greece - cyprus extended
 then  
         gmtset PS_MEDIA 29cx21c
@@ -292,9 +285,9 @@ else
         scale=-Lf20/34.5/36:24/100+l+jr
         range=-R19/30/34/42
         proj=-Jm24/37/1:6000000
-        logo_pos=BL/19c/0.2c/"DSO[at]NTUA"
-        logo_pos2="-C14.8c/0.1c"
-        legendc="-Jx1i -R0/8/0/8 -Dx12.7c/10.6c/3.6c/4.3c/BL"     
+        logo_pos=BL/10.4c/0.2c/"DSO[at]NTUA"
+        logo_pos2="-C14.8c/0.9c"
+        legendc="-Jx1i -R0/8/0/8 -Dx0.3c/0.2c/3.6c/4.3c/BL"     
 
 fi
 
@@ -302,8 +295,9 @@ fi
 if [ "$TOPOGRAPHY" -eq 0 ]
 then
 	################## Plot coastlines only ######################
-	pscoast $range $proj -B$frame:."$maptitle": -Df -W0.5/0/0/0 -G195  -U$logo_pos -K > $outfile
-	psbasemap -R -J -O -K --FONT_ANNOT_PRIMARY=10p $scale --FONT_LABEL=10p >> $outfile
+	psbasemap -R -J -O -K --FONT_ANNOT_PRIMARY=10p $scale --FONT_LABEL=10p > $outfile
+	pscoast $range $proj -B$frame:."$maptitle": -Df -W.2,black -G195  -U$logo_pos -K >> $outfile
+# 	psbasemap -R -J -O -K --FONT_ANNOT_PRIMARY=10p $scale --FONT_LABEL=10p >> $outfile
 fi
 if [ "$TOPOGRAPHY" -eq 1 ]
 then
