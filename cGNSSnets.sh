@@ -241,6 +241,23 @@ then
 	fi
 fi
 
+###check dems
+if [ "$TOPOGRAPHY" -eq 1 ]
+then
+	if [ ! -f $inputTopoB ]
+	then
+		echo "grd file for topography toes not exist, var turn to coastline"
+		TOPOGRAPHY=0
+	fi
+fi
+
+###check LOGO file
+if [ ! -f "$pth2logos" ]
+then
+	echo "Logo file does not exist"
+	LOGO=0
+fi
+
 
 # ///////////////// set region //////////////////////////////////
 if [ "$REGION" == "sant" ]

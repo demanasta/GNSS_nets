@@ -36,6 +36,7 @@ Switches:
 	-o [:= output] name of output files
 	-l [:=labels] plot labels
 	-leg [:=legend] insert legends
+	-logo [:=logo] plot logos
 	-jpg : convert eps file to jpg
 	-h [:= help] help menu
 
@@ -49,9 +50,9 @@ Switches:
 
 # //////////////////////////////////////////////////////////////////////////////
 # GMT parameters
-gmtset MAP_FRAME_TYPE fancy
-gmtset PS_PAGE_ORIENTATION portrait
-gmtset FONT_ANNOT_PRIMARY 10 FONT_LABEL 10 MAP_FRAME_WIDTH 0.12c FONT_TITLE 18p
+gmt gmtset MAP_FRAME_TYPE fancy
+gmt gmtset PS_PAGE_ORIENTATION portrait
+gmt gmtset FONT_ANNOT_PRIMARY 10 FONT_LABEL 10 MAP_FRAME_WIDTH 0.12c FONT_TITLE 18p
 # gmtset PS_MEDIA 29cx21c
 
 # //////////////////////////////////////////////////////////////////////////////
@@ -59,6 +60,7 @@ gmtset FONT_ANNOT_PRIMARY 10 FONT_LABEL 10 MAP_FRAME_WIDTH 0.12c FONT_TITLE 18p
 REGION="greece"
 TOPOGRAPHY=0
 LABELS=0
+LOGO=0
 OUTJPG=0
 LEGEND=0
 
@@ -215,6 +217,10 @@ do
 			LEGEND=1
 			shift
 			;;
+		-logo)
+			LOGO=1
+			shift
+			;;
 		-jpg)
 			OUTJPG=1
 			shift
@@ -226,11 +232,27 @@ do
 done
 
 
+###check dems
+if [ "$TOPOGRAPHY" -eq 1 ]
+then
+	if [ ! -f $inputTopoB ]
+	then
+		echo "grd file for topography toes not exist, var turn to coastline"
+		TOPOGRAPHY=0
+	fi
+fi
+
+###check LOGO file
+if [ ! -f "$pth2logos" ]
+then
+	echo "Logo file does not exist"
+	LOGO=0
+fi
 
 # ///////////////// set region //////////////////////////////////
 if [ "$REGION" == "sant" ]
 then
-	gmtset PS_MEDIA 22cx21c
+gmt	gmtset PS_MEDIA 22cx21c
 	frame=0.05
         scale=-Lf25.51/36.315/36:24/4+l+jr
         range=-R25.27/25.55/36.3/36.5
@@ -240,7 +262,7 @@ then
         legendc="-Jx1i -R0/8/0/8 -Dx0c/0.3c/3.6c/4.7c/BL"
 elif [ "$REGION" == "extsant" ]
 then
-	gmtset PS_MEDIA 25cx21c
+gmt	gmtset PS_MEDIA 25cx21c
         frame=0.25
         scale=-Lf25.95/36.315/36:24/10+l+jr
         range=-R25.2/26.1/36.2/36.9
@@ -251,7 +273,7 @@ then
         
 elif [ "$REGION" == "saegean" ] #-------------------saegean 
 then
-	gmtset PS_MEDIA 29cx21c
+gmt	gmtset PS_MEDIA 29cx21c
         frame=2
         scale=-Lf22/34.3/36:24/100+l+jr
         range=-R21/30.5/34/38.7
@@ -261,7 +283,7 @@ then
 	legendc="-Jx1i -R0/8/0/8 -Dx20c/0.3c/3.6c/4.7c/BL"
 elif [ "$REGION" == "grCyprus" ] #-------------------greece - cyprus extended
 then  
-        gmtset PS_MEDIA 29cx21c
+gmt	gmtset PS_MEDIA 29cx21c
         frame=2
         scale=-Lf20/34.5/36:24/100+l+jr
         range=-R19/35/34/42
@@ -271,7 +293,7 @@ then
         legendc="-Jx1i -R0/8/0/8 -Dx.4c/0.2c/3.6c/4.7c/BL"      
 elif [ "$REGION" ==  "corinth" ] #-----------------corinth rift 
 then
-	gmtset PS_MEDIA 21cx15c
+gmt	gmtset PS_MEDIA 21cx15c
 	frame=.5x
 	scale=-Lf21.2/37.9/36:24/20+l+jr
 	range=-R21/23/37.8/38.68
@@ -280,7 +302,7 @@ then
 	logo_pos2="-C14.8c/0.1c"
 	legendc="-Jx1i -R0/8/0/8 -Dx0.3c/0.6c/3.6c/4.3c/BL"	
 else
-       gmtset PS_MEDIA 21cx21c
+gmt	gmtset PS_MEDIA 21cx21c
         frame=2
         scale=-Lf20/34.5/36:24/100+l+jr
         range=-R19/30/34/42
@@ -295,24 +317,24 @@ fi
 if [ "$TOPOGRAPHY" -eq 0 ]
 then
 	################## Plot coastlines only ######################
-	psbasemap -R -J -O -K --FONT_ANNOT_PRIMARY=10p $scale --FONT_LABEL=10p > $outfile
-	pscoast $range $proj -B$frame:."$maptitle": -Df -W.2,black -G195  -U$logo_pos -K >> $outfile
+gmt	psbasemap $range $proj $scale -B$frame:."$maptitle": -P -K > $outfile
+gmt	pscoast -R -J -O -K -W0.25 -G195 -Df -Na -U$logo_pos >> $outfile
 # 	psbasemap -R -J -O -K --FONT_ANNOT_PRIMARY=10p $scale --FONT_LABEL=10p >> $outfile
 fi
 if [ "$TOPOGRAPHY" -eq 1 ]
 then
 	# ####################### TOPOGRAPHY ###########################
 	# bathymetry
-	makecpt -Cgebco.cpt -T-5000/100/150 -Z > $bathcpt
-	grdimage $inputTopoB $range $proj -C$bathcpt -K > $outfile
-	pscoast $proj -P $range -Df -Gc -K -O >> $outfile
+gmt	makecpt -Cgebco.cpt -T-5000/100/150 -Z > $bathcpt
+gmt	grdimage $inputTopoB $range $proj -C$bathcpt -K > $outfile
+gmt	pscoast $proj -P $range -Df -Gc -K -O >> $outfile
 	# land
-	makecpt -Cgray.cpt -T-5000/1800/50 -Z > $landcpt
-	grdimage $inputTopoL $range $proj -C$landcpt  -K -O >> $outfile
-	pscoast -R -J -O -K -Q >> $outfile
+gmt	makecpt -Cgray.cpt -T-5000/1800/50 -Z > $landcpt
+gmt	grdimage $inputTopoL $range $proj -C$landcpt  -K -O >> $outfile
+gmt	pscoast -R -J -O -K -Q >> $outfile
 	#------- coastline -------------------------------------------
-	psbasemap -R -J -O -K --FONT_ANNOT_PRIMARY=10p $scale --FONT_LABEL=10p >> $outfile
-	pscoast -Jm -R -B$frame:."$maptitle": -Df -W.2,black -K  -O -U$logo_pos >> $outfile
+gmt	psbasemap -R -J -O -K --FONT_ANNOT_PRIMARY=10p $scale --FONT_LABEL=10p >> $outfile
+gmt	pscoast -Jm -R -B$frame:."$maptitle": -Df -W.2,black -K  -O -U$logo_pos >> $outfile
 fi
 
 # start create legend file .legend
@@ -330,10 +352,10 @@ then
 		"SELECT $db_code, $db_lat, $db_lon FROM $db_table where network='GREECE';" \
 		| grep -v + \
 		| awk 'NR>1 {print $3,$2,9,0,1,"RB",$1}' > tmp-gre
-		psxy tmp-gre -Jm -O -R $gr_style -K >> $outfile
+		gmt psxy tmp-gre -Jm -O -R $gr_style -K >> $outfile
 		if [ "$LABELS" -eq 1 ]
 		then		
-			pstext tmp-gre -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
+			gmt pstext tmp-gre -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
 			
 		fi
 	fi
@@ -344,10 +366,10 @@ then
 			echo "input file $aegean_sta does not exist. look at network directory"
 			exit 1
 		else
-			awk '{print $2,$3}' $aegean_sta | psxy -Jm -O -R $aegean_style -K >> $outfile
+			awk '{print $2,$3}' $aegean_sta | gmt psxy -Jm -O -R $aegean_style -K >> $outfile
 			if [ "$LABELS" -eq 1 ]
 			then
-			      awk '{print $2,$3,9,0,1,"RB",$1}' $aegean_sta | pstext -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
+			      awk '{print $2,$3,9,0,1,"RB",$1}' $aegean_sta | gmt pstext -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
 			fi
 	# 	        echo "G 0.25c" >> .legend
 	# 		echo "S 0.4c t 0.22c red 0.22p 0.6c GREECE" >> .legend
@@ -368,10 +390,10 @@ then
 		"SELECT $db_code, $db_lat, $db_lon FROM $db_table where network='GREECE';" \
 		| grep -v + \
 		| awk 'NR>1 {print $3,$2,9,0,1,"RB",$1}' > tmp-gre
-		psxy tmp-gre -Jm -O -R $gr_style -K >> $outfile
+		gmt psxy tmp-gre -Jm -O -R $gr_style -K >> $outfile
 		if [ "$LABELS" -eq 1 ]
 		then		
-			pstext tmp-gre -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
+			gmt pstext tmp-gre -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
 			
 		fi
 	fi
@@ -382,10 +404,10 @@ then
 			echo "input file $centrgr_sta does not exist. look at network directory"
 			exit 1
 		else
-			awk '{print $2,$3}' $centrgr_sta | psxy -Jm -O -R $centrgr_style -K >> $outfile
+			awk '{print $2,$3}' $centrgr_sta | gmt psxy -Jm -O -R $centrgr_style -K >> $outfile
 			if [ "$LABELS" -eq 1 ]
 			then
-			      awk '{print $2,$3,9,0,1,"RB",$1}' $centrgr_sta | pstext -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
+			      awk '{print $2,$3,9,0,1,"RB",$1}' $centrgr_sta | gmt pstext -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
 			fi
 	# 	        echo "G 0.25c" >> .legend
 	# 		echo "S 0.4c t 0.22c red 0.22p 0.6c GREECE" >> .legend
@@ -404,10 +426,10 @@ then
 		"SELECT $db_code, $db_lat, $db_lon FROM $db_table where network='GREECE';" \
 		| grep -v + \
 		| awk 'NR>1 {print $3,$2,9,0,1,"RB",$1}' > tmp-gre
-		psxy tmp-gre -Jm -O -R $gr_style -K >> $outfile
+		gmt psxy tmp-gre -Jm -O -R $gr_style -K >> $outfile
 		if [ "$LABELS" -eq 1 ]
 		then		
-			pstext tmp-gre -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
+			gmt pstext tmp-gre -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
 			
 		fi
 	fi
@@ -418,10 +440,10 @@ then
 			echo "input file $corinth_sta does not exist. look at network directory"
 			exit 1
 		else
-			awk '{print $2,$3}' $corinth_sta | psxy -Jm -O -R $corinth_style -K >> $outfile
+			awk '{print $2,$3}' $corinth_sta | gmt psxy -Jm -O -R $corinth_style -K >> $outfile
 			if [ "$LABELS" -eq 1 ]
 			then
-			      awk '{print $2,$3,9,0,1,"RB",$1}' $corinth_sta | pstext -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
+			      awk '{print $2,$3,9,0,1,"RB",$1}' $corinth_sta | gmt pstext -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
 			fi
 	# 	        echo "G 0.25c" >> .legend
 	# 		echo "S 0.4c t 0.22c red 0.22p 0.6c GREECE" >> .legend
@@ -442,10 +464,10 @@ then
 		"SELECT $db_code, $db_lat, $db_lon FROM $db_table where network='GREECE';" \
 		| grep -v + \
 		| awk 'NR>1 {print $3,$2,9,0,1,"RB",$1}' > tmp-gre
-		psxy tmp-gre -Jm -O -R $gr_style -K >> $outfile
+		gmt psxy tmp-gre -Jm -O -R $gr_style -K >> $outfile
 		if [ "$LABELS" -eq 1 ]
 		then		
-			pstext tmp-gre -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
+			gmt pstext tmp-gre -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
 			
 		fi
 	fi
@@ -456,10 +478,10 @@ then
 			echo "input file $evia_sta does not exist. look at network directory"
 			exit 1
 		else
-			awk '{print $2,$3}' $evia_sta | psxy -Jm -O -R $evia_style -K >> $outfile
+			awk '{print $2,$3}' $evia_sta | gmt psxy -Jm -O -R $evia_style -K >> $outfile
 			if [ "$LABELS" -eq 1 ]
 			then
-			      awk '{print $2,$3,9,0,1,"RB",$1}' $evia_sta | pstext -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
+			      awk '{print $2,$3,9,0,1,"RB",$1}' $evia_sta | gmt  pstext -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
 			fi
 	# 	        echo "G 0.25c" >> .legend
 	# 		echo "S 0.4c t 0.22c red 0.22p 0.6c GREECE" >> .legend
@@ -480,10 +502,10 @@ then
 		"SELECT $db_code, $db_lat, $db_lon FROM $db_table where network='GREECE';" \
 		| grep -v + \
 		| awk 'NR>1 {print $3,$2,9,0,1,"RB",$1}' > tmp-gre
-		psxy tmp-gre -Jm -O -R $gr_style -K >> $outfile
+		gmt psxy tmp-gre -Jm -O -R $gr_style -K >> $outfile
 		if [ "$LABELS" -eq 1 ]
 		then		
-			pstext tmp-gre -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
+			gmt pstext tmp-gre -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
 			
 		fi
 	fi
@@ -494,10 +516,10 @@ then
 			echo "input file $grevena_sta does not exist. look at network directory"
 			exit 1
 		else
-			awk '{print $2,$3}' $grevena_sta | psxy -Jm -O -R $grevena_style -K >> $outfile
+			awk '{print $2,$3}' $grevena_sta | gmt psxy -Jm -O -R $grevena_style -K >> $outfile
 			if [ "$LABELS" -eq 1 ]
 			then
-			      awk '{print $2,$3,9,0,1,"RB",$1}' $grevena_sta | pstext -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
+			      awk '{print $2,$3,9,0,1,"RB",$1}' $grevena_sta | gmt pstext -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
 			fi
 	# 	        echo "G 0.25c" >> .legend
 	# 		echo "S 0.4c t 0.22c red 0.22p 0.6c GREECE" >> .legend
@@ -518,10 +540,10 @@ then
 		"SELECT $db_code, $db_lat, $db_lon FROM $db_table where network='GREECE';" \
 		| grep -v + \
 		| awk 'NR>1 {print $3,$2,9,0,1,"RB",$1}' > tmp-gre
-		psxy tmp-gre -Jm -O -R $gr_style -K >> $outfile
+		gmt psxy tmp-gre -Jm -O -R $gr_style -K >> $outfile
 		if [ "$LABELS" -eq 1 ]
 		then		
-			pstext tmp-gre -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
+			gmt pstext tmp-gre -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
 			
 		fi
 	fi
@@ -532,10 +554,10 @@ then
 			echo "input file $hellnet_sta does not exist. look at network directory"
 			exit 1
 		else
-			awk '{print $2,$3}' $hellnet_sta | psxy -Jm -O -R $hellnet_style -K >> $outfile
+			awk '{print $2,$3}' $hellnet_sta | gmt psxy -Jm -O -R $hellnet_style -K >> $outfile
 			if [ "$LABELS" -eq 1 ]
 			then
-			      awk '{print $2,$3,9,0,1,"RB",$1}' $hellnet_sta | pstext -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
+			      awk '{print $2,$3,9,0,1,"RB",$1}' $hellnet_sta | gmt  pstext -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
 			fi
 	# 	        echo "G 0.25c" >> .legend
 	# 		echo "S 0.4c t 0.22c red 0.22p 0.6c GREECE" >> .legend
@@ -556,10 +578,10 @@ then
 		"SELECT $db_code, $db_lat, $db_lon FROM $db_table where network='GREECE';" \
 		| grep -v + \
 		| awk 'NR>1 {print $3,$2,9,0,1,"RB",$1}' > tmp-gre
-		psxy tmp-gre -Jm -O -R $gr_style -K >> $outfile
+		gmt psxy tmp-gre -Jm -O -R $gr_style -K >> $outfile
 		if [ "$LABELS" -eq 1 ]
 		then		
-			pstext tmp-gre -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
+			gmt pstext tmp-gre -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
 			
 		fi
 	fi
@@ -570,10 +592,10 @@ then
 			echo "input file $ionian_sta does not exist. look at network directory"
 			exit 1
 		else
-			awk '{print $2,$3}' $ionian_sta | psxy -Jm -O -R $ionian_style -K >> $outfile
+			awk '{print $2,$3}' $ionian_sta | gmt psxy -Jm -O -R $ionian_style -K >> $outfile
 			if [ "$LABELS" -eq 1 ]
 			then
-			      awk '{print $2,$3,9,0,1,"RB",$1}' $ionian_sta | pstext -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
+			      awk '{print $2,$3,9,0,1,"RB",$1}' $ionian_sta | gmt pstext -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
 			fi
 	# 	        echo "G 0.25c" >> .legend
 	# 		echo "S 0.4c t 0.22c red 0.22p 0.6c GREECE" >> .legend
@@ -594,10 +616,10 @@ then
 		"SELECT $db_code, $db_lat, $db_lon FROM $db_table where network='GREECE';" \
 		| grep -v + \
 		| awk 'NR>1 {print $3,$2,9,0,1,"RB",$1}' > tmp-gre
-		psxy tmp-gre -Jm -O -R $gr_style -K >> $outfile
+		gmt psxy tmp-gre -Jm -O -R $gr_style -K >> $outfile
 		if [ "$LABELS" -eq 1 ]
 		then		
-			pstext tmp-gre -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
+			gmt pstext tmp-gre -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
 			
 		fi
 	fi
@@ -608,10 +630,10 @@ then
 			echo "input file $roads_sta does not exist. look at network directory"
 			exit 1
 		else
-			awk '{print $2,$3}' $roads_sta | psxy -Jm -O -R $roads_style -K >> $outfile
+			awk '{print $2,$3}' $roads_sta | gmt psxy -Jm -O -R $roads_style -K >> $outfile
 			if [ "$LABELS" -eq 1 ]
 			then
-			      awk '{print $2,$3,9,0,1,"RB",$1}' $roads_sta | pstext -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
+			      awk '{print $2,$3,9,0,1,"RB",$1}' $roads_sta | gmt pstext -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
 			fi
 	# 	        echo "G 0.25c" >> .legend
 	# 		echo "S 0.4c t 0.22c red 0.22p 0.6c GREECE" >> .legend
@@ -632,10 +654,10 @@ then
 		"SELECT $db_code, $db_lat, $db_lon FROM $db_table where network='GREECE';" \
 		| grep -v + \
 		| awk 'NR>1 {print $3,$2,9,0,1,"RB",$1}' > tmp-gre
-		psxy tmp-gre -Jm -O -R $gr_style -K >> $outfile
+		gmt psxy tmp-gre -Jm -O -R $gr_style -K >> $outfile
 		if [ "$LABELS" -eq 1 ]
 		then		
-			pstext tmp-gre -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
+			gmt pstext tmp-gre -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
 			
 		fi
 	fi
@@ -646,10 +668,10 @@ then
 			echo "input file $sing_sta does not exist. look at network directory"
 			exit 1
 		else
-			awk '{print $2,$3}' $sing_sta | psxy -Jm -O -R $sing_style -K >> $outfile
+			awk '{print $2,$3}' $sing_sta | gmt psxy -Jm -O -R $sing_style -K >> $outfile
 			if [ "$LABELS" -eq 1 ]
 			then
-			      awk '{print $2,$3,9,0,1,"RB",$1}' $sing_sta | pstext -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
+			      awk '{print $2,$3,9,0,1,"RB",$1}' $sing_sta | gmt pstext -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile
 			fi
 	# 	        echo "G 0.25c" >> .legend
 	# 		echo "S 0.4c t 0.22c red 0.22p 0.6c GREECE" >> .legend
@@ -667,11 +689,17 @@ echo "D 0.3c 1p" >> .legend
 # ///////////////// PLOT LEGEND //////////////////////////////////
 if [ "$LEGEND" -eq 1 ]
 then
-        pslegend .legend ${legendc} -C0.1c/0.1c -L1.1 -O -K >> $outfile
+        gmt pslegend .legend ${legendc} -C0.1c/0.1c -L1.1 -O -K >> $outfile
 fi
 
-#/////////////////FINESH SCRIPT
-psimage $pth2logos/DSOlogo2.eps -O $logo_pos2 -W1.1c -F0.4 >>$outfile
+#/////////////////PLOT LOGO DSO
+if [ "$LOGO" -eq 1 ]
+then
+gmt	psimage $pth2logos -O $logo_pos2 -W1.1c -F0.4  -K >>$outfile
+fi
+
+#//////// close eps file
+echo "9999 9999" | gmt psxy -J -R  -O >> $outfile
 
 #################--- Convert to jpg format ----##########################################
 if [ "$OUTJPG" -eq 1 ]
