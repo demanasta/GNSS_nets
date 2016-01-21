@@ -274,12 +274,12 @@ elif [ "$REGION" == "extsant" ]
 then
 gmt	gmtset PS_MEDIA 25cx21c
         frame=0.25
-        scale=-Lf25.95/36.315/36:24/10+l+jr
+        scale=-Lf25.92/36.24/36:24/10+l+jr
         range=-R25.2/26.1/36.2/36.9
         proj=-Jm25.4/36.4/1:500000
         logo_pos=BL/0.2c/0.2c/"DSO[at]NTUA"
         logo_pos2="-C14.8c/0.1c"
-        legendc="-Jx1i -R0/8/0/8 -Dx11c/3.3c/3.6c/4.7c/BL"
+        legendc="-Jx1i -R0/8/0/8 -Dx11.7c/6.3c/3.6c/4.7c/BL"
         
 elif [ "$REGION" == "saegean" ] #-------------------saegean 
 then
