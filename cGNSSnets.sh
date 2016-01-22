@@ -269,7 +269,7 @@ gmt	gmtset PS_MEDIA 22cx21c
         proj=-Jm25.4/36.4/1:150000
         logo_pos=BL/0.2c/0.2c/"DSO[at]NTUA"
         logo_pos2="-C15.2c/13.6c"
-        legendc="-Jx1i -R0/8/0/8 -Dx0c/0.3c/3.6c/4.7c/BL"
+        legendc="-Jx1i -R0/8/0/8 -Dx0c/3c/3.6c/4.7c/BL"
 elif [ "$REGION" == "extsant" ]
 then
 gmt	gmtset PS_MEDIA 25cx21c
@@ -290,7 +290,7 @@ gmt	gmtset PS_MEDIA 29cx21c
         proj=-Jm24/36/1:3450000
 	logo_pos=BL/19c/0.2c/"DSO[at]NTUA"
         logo_pos2="-C23.3c/13.8c"
-	legendc="-Jx1i -R0/8/0/8 -Dx20c/0.3c/3.6c/4.7c/BL"
+	legendc="-Jx1i -R0/8/0/8 -Dx20.5c/2.3c/3.6c/4.7c/BL"
 elif [ "$REGION" == "grCyprus" ] #-------------------greece - cyprus extended
 then  
 gmt	gmtset PS_MEDIA 29cx21c
@@ -300,17 +300,17 @@ gmt	gmtset PS_MEDIA 29cx21c
         proj=-Jm24/37/1:6000000
         logo_pos=BL/18c/0.2c/"DSO[at]NTUA"
         logo_pos2="-C22c/13.7c"
-        legendc="-Jx1i -R0/8/0/8 -Dx.4c/0.2c/3.6c/4.7c/BL"      
+        legendc="-Jx1i -R0/8/0/8 -Dx20c/7.2c/3.6c/4.7c/BL"      
 elif [ "$REGION" ==  "corinth" ] #-----------------corinth rift 
 then
-gmt	gmtset PS_MEDIA 21cx15c
+gmt	gmtset PS_MEDIA 24.5cx15c
 	frame=.5x
 	scale=-Lf21.2/37.9/36:24/20+l+jr
 	range=-R21/23/37.8/38.68
 	proj=-Jm24/37/1:1100000
-	logo_pos=BL/19c/0.2c/"DSO[at]NTUA"
+	logo_pos=BL/4c/-1.2c/"DSO[at]NTUA"
 	logo_pos2="-C14.8c/0.1c"
-	legendc="-Jx1i -R0/8/0/8 -Dx0.3c/0.6c/3.6c/4.3c/BL"	
+	legendc="-Jx1i -R0/8/0/8 -Dx17.7c/1.6c/3.6c/4.3c/BL"	
 else
 gmt	gmtset PS_MEDIA 21cx21c
         frame=2
@@ -319,7 +319,7 @@ gmt	gmtset PS_MEDIA 21cx21c
         proj=-Jm24/37/1:6000000
         logo_pos=BL/10.4c/0.2c/"DSO[at]NTUA"
         logo_pos2="-C14.8c/0.9c"
-        legendc="-Jx1i -R0/8/0/8 -Dx0.3c/0.2c/3.6c/4.3c/BL"     
+        legendc="-Jx1i -R0/8/0/8 -Dx12.7c/10.8c/3.6c/4.3c/BL"     
 
 fi
 
@@ -475,7 +475,7 @@ then
                 "SELECT $db_code, $db_lat, $db_lon FROM $db_table where network='GREECE' AND agency='CRL';" \
                 | grep -v + \
                 | awk 'NR>1 {print $3,$2,9,0,1,"RB",$1}' > tmp-grecrl
-                gmt psxy tmp-grecrl -Jm -O -R $grnoa_style -K >> $outfile
+                gmt psxy tmp-grecrl -Jm -O -R $grcrl_style -K >> $outfile
                 if [ "$LABELS" -eq 1 ]
                 then            
                         gmt pstext tmp-grecrl -Jm -R -Dj0.2c/0.2c -Gwhite -O -K -V>> $outfile

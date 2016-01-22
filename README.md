@@ -73,7 +73,16 @@ Switches:
 	run:
 /******************************************************************************/
 ```
-# 1. Plot Campaign GPS Networks (campaign_nets.sh)
+## Example:
+```
+$ ./cGNSSnets.sh -fgnss  -jpg -topo -leg -logo -o test -ggrcom -ggrnoa -ggrcrl -gsa -gur -mt "Example 1" 
+
+```
+
+![Example1](Example1.jpg)
+
+
+# 2. Plot Campaign GPS Networks(campaign_nets.sh)
 plot all available campaign GPS stations in Greece
 
 use -h (help) to see all available switces
@@ -120,4 +129,28 @@ Switches:
 	run:
 /******************************************************************************/
 ```
+## Example:
+```
+$ ./campaign_nets.sh -topo -jpg -leg -logo -fgnss -cAegean -cCorinth -cHELLNET -cSING -mt "Example 2"
 
+```
+
+![Example2](Example2.jpg)
+
+
+
+# Updates
+========
+- 21-1-2015: online version is available
+
+# References
+=========
+Ganas Athanassios, Oikonomou Athanassia I., and Tsimi Christina, 2013. NOAFAULTS: a digital database for active faults in Greece. Bulletin of the Geological Society of Greece, vol. XLVII and Proceedings of the 13th International Congress, Chania, Sept. 2013.
+
+Wessel, P., W. H. F. Smith, R. Scharroo, J. F. Luis, and F. Wobbe, Generic Mapping Tools: Improved version released, EOS Trans. AGU, 94, 409-410, 2013.
+
+# Contact
+=========
+Demitris Anastasiou, danast@mail.ntua.gr
+
+Xanthos Papanikolaou, xanthos@mail.ntua.gr
