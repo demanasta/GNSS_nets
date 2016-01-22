@@ -12,7 +12,7 @@ pth2logos=$HOME/Map_project/logos/DSOlogo2.eps
 # Set Network Style Ploting
 gr_style="-St0.37c -W0.01c -Gred"
 sa_style="-St0.37c -W0.01c -Ggreen"
-ur_style="-St0.37c -W0.01c -G0/0/160"
+ur_style="-St0.22c -W0.01c -G0/0/160"
 me_style="-St0.20c -W0.01c -Gblack"
 hp_style="-Sc0.24c -W0.01c -Gred"
 
