@@ -79,7 +79,7 @@ $ ./cGNSSnets.sh -fgnss  -jpg -topo -leg -logo -o test -ggrcom -ggrnoa -ggrcrl -
 
 ```
 
-![Example1](Example1.jpg)
+![Example1](https://raw.githubusercontent.com/demanasta/GNSS_nets/master/Example1.jpg)
 
 
 # 2. Plot Campaign GPS Networks(campaign_nets.sh)
@@ -135,7 +135,7 @@ $ ./campaign_nets.sh -topo -jpg -leg -logo -fgnss -cAegean -cCorinth -cHELLNET -
 
 ```
 
-![Example2](Example2.jpg)
+![Example2](https://raw.githubusercontent.com/demanasta/GNSS_nets/master/Example2.jpg)
 
 
 
