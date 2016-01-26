@@ -266,7 +266,7 @@ echo "N 1" >> .legend
 if [ "$DBGNSS" -eq 1 ]
 then
 	mysql -h $dbhost -u $dbuser -p$dbpasswd -D $dbase -e \
-	"SELECT $db_code, $db_lat, $db_lon FROM $db_table where network='GREECE';" \
+	"SELECT $db_code, $db_lat, $db_lon FROM $db_table JOIN sta2nets ON sta2nets.station_id=station.station_id JOIN network ON network.network_id=sta2nets.network_id WHERE network.network_name='$plotnet';" \
 	| grep -v + \
 	| awk 'NR>1 {print $3,$2,9,0,1,"RB",$1}' > tmp-gre
 	gmt psxy tmp-gre -Jm -O -R $gr_style -K >> $outfile
