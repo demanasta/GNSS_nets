@@ -138,6 +138,7 @@ $ ./campaign_nets.sh -topo -jpg -leg -logo -fgnss -cAegean -cCorinth -cHELLNET -
 ![Example2](https://raw.githubusercontent.com/demanasta/GNSS_nets/master/Example2.jpg)
 
 # 3. Plot Processed GPS Networks (cGNSSproc.sh)
+```
 /******************************************************************************/
 	Program Name : cGNSSproc.sh
 	Version : v-1.0
@@ -182,7 +183,7 @@ Switches:
 
 	run:
 /******************************************************************************/
-
+```
 ## Example:
 Plot processed and unrocessed stations for network greece.
 ```
