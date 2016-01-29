@@ -216,17 +216,15 @@ Plot Helmert rms and baselines for network greece
 
 
 # Updates
-========
 - 29-1-2015: added cGNSSpros.sh script
 - 21-1-2015: online version is available
 
 # References
-=========
 
 Wessel, P., W. H. F. Smith, R. Scharroo, J. F. Luis, and F. Wobbe, Generic Mapping Tools: Improved version released, EOS Trans. AGU, 94, 409-410, 2013.
 
 # Contact
-=========
+
 Demitris Anastasiou, danast@mail.ntua.gr
 
 Xanthos Papanikolaou, xanthos@mail.ntua.gr
