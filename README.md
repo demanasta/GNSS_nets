@@ -19,7 +19,7 @@ db_lon="column name include longitude"
 2. gmtparam :  config all gmt parameters, input and output file, paths, styles etc
 3. regparam : NOT USED
 
-If you don't use database you must set input files as bellow
+If you don't use database you must set input files as bellow (only for scripts cGNSSnets.sh campaign_nets.sh)
 
 name:network.sites
 
@@ -79,7 +79,7 @@ $ ./cGNSSnets.sh -fgnss  -jpg -topo -leg -logo -o test -ggrcom -ggrnoa -ggrcrl -
 
 ```
 
-![Example1](Example1.jpg)
+![Example1](https://raw.githubusercontent.com/demanasta/GNSS_nets/master/Example1.jpg)
 
 
 # 2. Plot Campaign GPS Networks(campaign_nets.sh)
@@ -135,17 +135,77 @@ $ ./campaign_nets.sh -topo -jpg -leg -logo -fgnss -cAegean -cCorinth -cHELLNET -
 
 ```
 
-![Example2](Example2.jpg)
+![Example2](https://raw.githubusercontent.com/demanasta/GNSS_nets/master/Example2.jpg)
 
+# 3. Plot Processed GPS Networks (cGNSSproc.sh)
+/******************************************************************************/
+	Program Name : cGNSSproc.sh
+	Version : v-1.0
+	Purpose : Plot cGNSS network stations from procsta database
+	Usage   : cGNSSnets.sh -r region |  | -o [output] | -jpg 
+Switches:
+	-r [:= region] region to plot [saegean, sant, extsant]
+		default : greece region
+		sant : santorini
+		extsant : extented santorini
+		saegean : South aegean region 
+		grCyprus: greece + cyprus
+		corinth: corinth rift
+		europe: europe region
+	-mt [:= map title] title map default none use quotes
+
+/*** NETWORKS  PLOTS **********************************************************/
+	-n (network) %select processed network from bellow
+	   greece
+	   uranus
+	   santorini
+	   ....etc
+
+/*** SOLUTION PLOTS **********************************************************/
+	-s (sol file)
+	   -pall : plot all station network
+	   -ppro : plot processing stations
+	   -pell : plot ellipsis
+	   -pbl  : plot baselines
+	   
+/*** OTHER OPRTIONS ************************************************************/
+	-topo [:=topography] use dem for background
+	-o [:= output] name of output files
+	-l [:=labels] plot labels
+	-leg [:=legend] insert legends
+	-logo [:=logo] plot logo
+	-jpg : convert eps file to jpg
+	-h [:= help] help menu
+
+	Exit Status:    1 -> help message or error
+	Exit Status:    0 -> sucesseful exit
+
+	run:
+/******************************************************************************/
+
+## Example:
+Plot processed and unrocessed stations for network greece.
+```
+$ ./cGNSSproc.sh  -n greece  -jpg -s greece-15002-fin.proc -pall -ppro -leg -topo -mt "Example 3" -logo -o Example3
+
+```
+![Example3](https://raw.githubusercontent.com/demanasta/GNSS_nets/master/Example3.jpg)
+
+## Example:
+Plot Helmert rms and baselines for network greece
+```
+./cGNSSproc.sh -r europe -n greece -jpg -s greece-15002-fin.proc -pell -pbl -mt "Example 4" -leg -logo -o Example4
+```
+![Example4](https://raw.githubusercontent.com/demanasta/GNSS_nets/master/Example4.jpg)
 
 
 # Updates
 ========
+- 29-1-2015: added cGNSSpros.sh script
 - 21-1-2015: online version is available
 
 # References
 =========
-Ganas Athanassios, Oikonomou Athanassia I., and Tsimi Christina, 2013. NOAFAULTS: a digital database for active faults in Greece. Bulletin of the Geological Society of Greece, vol. XLVII and Proceedings of the 13th International Congress, Chania, Sept. 2013.
 
 Wessel, P., W. H. F. Smith, R. Scharroo, J. F. Luis, and F. Wobbe, Generic Mapping Tools: Improved version released, EOS Trans. AGU, 94, 409-410, 2013.
 
