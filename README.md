@@ -184,6 +184,21 @@ Switches:
 	run:
 /******************************************************************************/
 ```
+For plotting solution metadata should be created a solution file following thw structure bellow:
+```
+# this is comments!
+# FOR PROCESSED STATIONS:
+##  CODE dx       dy      dz       rms_x  rms_y   rms_z    ell_a    ell_b     Az   typ  Longtitude Latitude   Height
+##* **** ******* ******* ********  ****** ******* ******* ******** ******** ****** *** ********** ********** ******
+01 ANKR  0.0148  0.00523 -0.00036 -0.0101 -0.0034 0.01154 0.000570 0.000620 085.80 EST 39.8873712 32.7584698 976.02
+# FOR BASELINES (use BL for fisst 2 chars)
+##  lat 1         lon 1         lat2         lon2     amb  typ
+## *********** ************ ************ ************ **** ***
+BL 40.56681913 23.003721009 41.140212284 24.916801994 66.0 W/N
+```
+take a look at example file greece-15002-fin.proc
+
+
 ## Example:
 Plot processed and unrocessed stations for network greece.
 ```
