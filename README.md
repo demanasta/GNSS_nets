@@ -184,7 +184,7 @@ Switches:
 	run:
 /******************************************************************************/
 ```
-For plotting solution metadata should be created a solution file following thw structure bellow:
+For plotting solution metadata should be created a solution file following the structure bellow:
 ```
 # this is comments!
 # FOR PROCESSED STATIONS:
@@ -196,7 +196,7 @@ For plotting solution metadata should be created a solution file following thw s
 ## *********** ************ ************ ************ **** ***
 BL 40.56681913 23.003721009 41.140212284 24.916801994 66.0 W/N
 ```
-take a look at example file greece-15002-fin.proc
+take a look also at example file greece-15002-fin.proc
 
 
 ## Example:
