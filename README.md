@@ -1,5 +1,5 @@
 # Plot GNSS Networks in Greece
-This repository includes bash scripts that use [Generic Tool Maps (Wessel et al., 2013)](http://gmt.soest.hawaii.edu/projects/gmt) to plot all continuous and campaign GNSS networks processed at DSO automated platform and campaign networks. Also a new script added to plot metadata from a MySQL, processed and unprocessed stations from a network, rms and baselined formed for the data processing.
+This repository includes bash scripts that use [Generic Mapping Tools (Wessel et al., 2013)](http://gmt.soest.hawaii.edu/projects/gmt) to plot all continuous and campaign GNSS networks processed at DSO automated platform and campaign networks. Also a new script added to plot metadata from a MySQL, processed and unprocessed stations from a network, rms and baselined formed for the data processing.
 
 #configuration files
 1. dbparameters
