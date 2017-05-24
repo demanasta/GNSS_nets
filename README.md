@@ -1,6 +1,10 @@
 # Plot GNSS Networks in Greece
 This repository includes bash scripts that use [Generic Mapping Tools (Wessel et al., 2013)](http://gmt.soest.hawaii.edu/projects/gmt) to plot all continuous and campaign GNSS networks processed at DSO automated platform and campaign networks. Also a new script added to plot metadata from a MySQL, processed and unprocessed stations from a network, rms and baselined formed for the data processing.
 
+<!-- [![Build Status](https://api.travis-ci.org/kks32/phd-thesis-template.svg)](https://travis-ci.org/kks32/phd-thesis-template) -->
+[![License GPL-3.0](http://img.shields.io/badge/license-GPL-brightgreen.svg)](LICENSE)
+[![Version](http://img.shields.io/badge/version-1.0-brightgreen.svg)](https://github.com/demanasta/GNSS_nets/releases/latest)
+
 #configuration files
 1. dbparameters
 copy dbparameters.default file to dbparameters and edit the variables to connect your database
