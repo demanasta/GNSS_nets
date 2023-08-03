@@ -5,7 +5,7 @@
 function help {	echo "
 /******************************************************************************/
 	Program Name : campaign_nets.sh
-	Version : v-0.1
+	Version : v-0.2
 	Purpose : Plot cGNSS network stations
 	Usage   :campaign_nets.sh -r region |  | -o [output] | -jpg 
 Switches:
@@ -43,7 +43,7 @@ Switches:
 	Exit Status:    1 -> help message or error
 	Exit Status:    0 -> sucesseful exit
 
-	run:
+	run: ./campaign_nets.sh -topo -jpg -leg -logo -fgnss -cAegean 
 /******************************************************************************/"
 	exit 1
 }
@@ -325,11 +325,11 @@ if [ "$TOPOGRAPHY" -eq 1 ]
 then
 	# ####################### TOPOGRAPHY ###########################
 	# bathymetry
-gmt	makecpt -Cgebco.cpt -T-5000/100/150 -Z > $bathcpt
+gmt	makecpt -Cgebco -T-5000/100/150 -Z > $bathcpt
 gmt	grdimage $inputTopoB $range $proj -C$bathcpt -K > $outfile
 gmt	pscoast $proj -P $range -Df -Gc -K -O >> $outfile
 	# land
-gmt	makecpt -Cgray.cpt -T-5000/1800/50 -Z > $landcpt
+gmt	makecpt -Cgray -T-5000/1800/50 -Z > $landcpt
 gmt	grdimage $inputTopoL $range $proj -C$landcpt  -K -O >> $outfile
 gmt	pscoast -R -J -O -K -Q >> $outfile
 	#------- coastline -------------------------------------------

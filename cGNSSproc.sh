@@ -5,7 +5,7 @@
 function help {	echo "
 /******************************************************************************/
 	Program Name : cGNSSproc.sh
-	Version : v-1.0
+	Version : v-1.1
 	Purpose : Plot cGNSS network stations from procsta database
 	Usage   : cGNSSnets.sh -r region |  | -o [output] | -jpg 
 Switches:
@@ -316,11 +316,11 @@ then
 	# bathymetry
 if [ "$REGION" == "europe" ]
 then
-gmt	makecpt -Cgebco.cpt -T-7000/0/150 -Z > $bathcpt
-gmt	makecpt -Cgray.cpt -T-5000/2300/50 -Z > $landcpt
+gmt	makecpt -Cgebco -T-7000/0/150 -Z > $bathcpt
+gmt	makecpt -Cgray -T-5000/2300/50 -Z > $landcpt
 else
-gmt	makecpt -Cgebco.cpt -T-5000/100/150 -Z > $bathcpt
-gmt	makecpt -Cgray.cpt -T-5000/1800/50 -Z > $landcpt
+gmt	makecpt -Cgebco -T-5000/100/150 -Z > $bathcpt
+gmt	makecpt -Cgray -T-5000/1800/50 -Z > $landcpt
 fi
 # gmt	makecpt -Cgebco.cpt -T-5000/100/150 -Z > $bathcpt
 gmt	grdimage $inputTopoB $range ${projt}${projp} -C$bathcpt -K > $outfile

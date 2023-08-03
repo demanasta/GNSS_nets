@@ -5,7 +5,7 @@
 function help {	echo "
 /******************************************************************************/
 	Program Name : cGNSSnets.sh
-	Version : v-1.0
+	Version : v-1.1
 	Purpose : Plot cGNSS network stations
 	Usage   : cGNSSnets.sh -r region |  | -o [output] | -jpg 
 Switches:
@@ -335,11 +335,11 @@ if [ "$TOPOGRAPHY" -eq 1 ]
 then
 	# ####################### TOPOGRAPHY ###########################
 	# bathymetry
-gmt	makecpt -Cgebco.cpt -T-5000/100/150 -Z > $bathcpt
+gmt	makecpt -Cgebco -T-5000/100/150 -Z > $bathcpt
 gmt	grdimage $inputTopoB $range $proj -C$bathcpt -K > $outfile
 gmt	pscoast $proj -P $range -Df -Gc -K -O >> $outfile
 	# land
-gmt	makecpt -Cgray.cpt -T-5000/1800/50 -Z > $landcpt
+gmt	makecpt -Cgray -T-5000/1800/50 -Z > $landcpt
 gmt	grdimage $inputTopoL $range $proj -C$landcpt  -K -O >> $outfile
 gmt	pscoast -R -J -O -K -Q >> $outfile
 	#------- coastline -------------------------------------------
